@@ -6,7 +6,7 @@
 # 4mm line setup 
 # -=-=-=-=-=-=-=-
 
-execfile('configure_Wband_H2CO72GHz.py')
+execfile('/users/aginsbur/GBT15A-446/configure_Wband_H2CO72GHz.py')
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 # Read my catalog

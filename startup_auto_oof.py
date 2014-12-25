@@ -33,7 +33,7 @@ Break("Check and enter solutions")
 #77GHz
 # old version: execfile("/home/astro-util/projects/4mm/config_line_FL2")
 # 68-72 GHz FL1
-execfile('configure_Wband_H2CO72GHz.py')
+execfile('/users/aginsbur/GBT15A-446/configure_Wband_H2CO72GHz.py')
 Slew(source)
 Balance()
 CalSeq("manual",10)
