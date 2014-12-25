@@ -1,4 +1,7 @@
-head = name coordinates ra dec velocity
-W51MainAndIRS2      J2000    19:23:41.935   +14:30:47.49   60
-W51-Main            J2000    19:23:43.87    +14:30:29.5    60
-W51-OFF             J2000    19:26:43.41    +14:02:10.5    60
+format=spherical
+coordmode=J2000
+veldef=vrad-lsr
+HEAD = NAME RA DEC VEL 
+W51M_IRS2           19:23:41.935   +14:30:47.49   60
+W51-Main            19:23:43.87    +14:30:29.5    60
+W51-OFF             19:26:43.41    +14:02:10.5    60

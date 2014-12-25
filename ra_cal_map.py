@@ -12,23 +12,23 @@ execfile('/users/aginsbur/GBT15A-446/configure_Wband_H2CO72GHz.py')
 # Read my catalog
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-catp = Catalog("w51.cat")
+catp = Catalog("/users/aginsbur/GBT15A-446/w51.cat")
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 # Chopper Wheel Calibration
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-Slew('W51MainAndIRS2')
+Slew('w51m_irs2')
 Balance()
 
-CalSeq("auto",30.0)
+CalSeq(type="manual", scanDuration=10.0, location="W51-OFF")
 
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 # Integrate on Source
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-Slew('W51MainAndIRS2')
+Slew('w51m_irs2')
 
 #pick beam 2 
 beamName = '2'
@@ -42,7 +42,7 @@ total_time = 30. # 30 minutes integ. time target
 nscans = decsize / stepsize
 scanDuration = total_time*60. / nscans # 80 seconds
 
-RALongMap('W51MainAndIRS2',
+RALongMap('w51m_irs2',
           hLength = Offset("J2000", rasize, 0.0, cosv=True),
           vLength = Offset("J2000", 0.0, decsize, cosv=True),
           vDelta  = Offset("J2000", 0.0, stepsize, cosv=True),
@@ -50,4 +50,4 @@ RALongMap('W51MainAndIRS2',
           beamName=beamName)
 
 
-CalSeq("auto",30.0)
+CalSeq(type="manual", scanDuration=10.0, location="W51-OFF")

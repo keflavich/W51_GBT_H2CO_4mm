@@ -35,3 +35,22 @@ h2co['Species', 'Chemical Name', 'Freq-GHz', 'Meas Freq-GHz', 'Resolved QNs', 'C
        H2CO  Formaldehyde       --      72.83795       1(0,1)-0(0,0)            -4.1789       0.0   3.49565
        H2CO  Formaldehyde       --      72.83795       1(0,1)-0(0,0)            -4.1792       0.0   3.49565
        H2CO  Formaldehyde 72.83795      72.83795       1(0,1)-0(0,0)                0.0       0.0   3.49565
+
+
+Observing Setup
+===============
+VEGAS mode 2: 1500 MHz bandwidth (effectively 1250) with resolution ~0.4 km/s.  We will effectively
+have a spectral line survey covering 68.5-73 GHz (with a small gap somewhere in the range 71.5-72.0)
+
+
+Observing Strategy
+==================
+30m: startup_auto_oof.py  Auto_OOF using "2253+1608" (closest of the W-band calibrators to W51)
+40m: ra_cal_map.py        RA map 1.5x1.5' with calibration
+10m: pointfocus.py        Pointing & Focus
+40m: dec_cal_map.py       Dec map 1.5x1.5' with calibration
+40m: ra_cal_map.py        RA map 1.5x1.5' with calibration
+
+(the last observation won't finish, so it should be canceled 5 minutes before
+the end of the observing block, then a final CalSeq.py should be run)
+
