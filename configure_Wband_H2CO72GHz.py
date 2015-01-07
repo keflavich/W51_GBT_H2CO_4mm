@@ -55,15 +55,15 @@ restfreq = 23694.47, 23722.63, 23870.13, 24139.42, 24532.99, 24506.28, 24515.00,
 # H2CO 1-0 72.83795
 # H2CO 514-515 72.4091
 # H213CO 1-0 71.02478
-# H2C18O 1-0 69.41542
-# H213CO 514-515 68.86456
+# H2C18O 1-0 69.41542     (70000-1250/2 = 69375)
+# H213CO 514-515 68.86456 (can't be done simultaneous with H2CO 1-0 without great risk)
 
 myconfig = """
 receiver  = 'Rcvr68_92'
 beam      = 'B12'
 obstype   = 'Spectroscopy'
 backend   = 'VEGAS'
-restfreq  = 69000., 70000., 71000., 72500.
+restfreq  = 70000., 71000., 72000., 72500.
 dopplertrackfreq = 72837.95
 deltafreq = 0
 bandwidth = 1500 # usable = 1250
@@ -78,6 +78,7 @@ vhigh     = 0.
 vframe    = "lsrk"
 vdef      = "Radio"
 pol       = "Linear"
+vegas.vpol='self'
 """
 
 Configure(myconfig)
