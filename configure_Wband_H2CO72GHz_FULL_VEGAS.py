@@ -1,6 +1,7 @@
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # 4mm line setup FL1 72GHz
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# To use a different configuration, overwrite the file configure_Wband_H2CO72GHz
 
 
 # H2CO 1-0 72.83795
