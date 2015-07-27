@@ -1,8 +1,11 @@
 #
 # Example 4mm Rx Check Out script
+# ADAM's NOTE: Run this.
 #
 
 catp= Catalog("/home/astro-util/astridcats/wband_pointing.cat")
+# Configure to W-band...
+execfile('/users/aginsbur/GBT15A-446/configure_Wband_H2CO72GHz.py')
 # *** Comment out all but active target source:
 
 #source="Jupiter"
