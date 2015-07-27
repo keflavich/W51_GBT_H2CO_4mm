@@ -14,7 +14,7 @@ receiver  = 'Rcvr68_92'
 beam      = 'B12'
 obstype   = 'Spectroscopy'
 backend   = 'VEGAS'
-restfreq  = 72000., 72500.
+restfreq  = 70000., 71000., 72000., 72500.
 dopplertrackfreq = 72837.95
 deltafreq = 0
 bandwidth = 1500 # usable = 1250

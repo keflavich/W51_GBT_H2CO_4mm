@@ -1,4 +1,6 @@
 # OTF mapping
+# BOTH RA and Dec
+# Use RA/Dec maps instead of this!
 
 # -=-=-=-=-=-=-=-
 # 4mm line setup 
