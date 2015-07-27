@@ -10,12 +10,14 @@
 # H2C18O 1-0 69.41542     (70000-1250/2 = 69375)
 # H213CO 514-515 68.86456 (can't be done simultaneous with H2CO 1-0 without great risk)
 
+# 2-band VEGAS config: 71 GHz for H213CO and 72.5 GHz for H2CO 5-5 and 1-0
+
 myconfig = """
 receiver  = 'Rcvr68_92'
 beam      = 'B12'
 obstype   = 'Spectroscopy'
 backend   = 'VEGAS'
-restfreq  = 72000., 72500.
+restfreq  = 71000., 72500.
 dopplertrackfreq = 72837.95
 deltafreq = 0
 bandwidth = 1500 # usable = 1250
