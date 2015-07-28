@@ -22,6 +22,7 @@ Slew('w51m_irs2')
 Balance()
 
 CalSeq(type="manual", scanDuration=10.0, location="W51-OFF")
+Nod("W51-OFF", "1", "2", 60)
 
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -50,7 +51,9 @@ RALongMap('w51m_irs2',
           beamName=beamName)
 
 
+Nod("W51-OFF", "1", "2", 60)
 CalSeq(type="manual", scanDuration=10.0, location="W51-OFF")
+Nod("W51-OFF", "1", "2", 60)
 
 nscans = rasize / stepsize
 scanDuration = total_time*60. / nscans # 80 seconds
@@ -62,4 +65,5 @@ DecLatMap('w51m_irs2',
           scanDuration = scanDuration,
           beamName=beamName)
 
+Nod("W51-OFF", "1", "2", 60)
 CalSeq(type="manual", scanDuration=10.0, location="W51-OFF")

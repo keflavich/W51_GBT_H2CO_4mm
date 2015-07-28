@@ -22,6 +22,7 @@ Slew('w51m_irs2')
 Balance()
 
 CalSeq(type="manual", scanDuration=10.0, location="W51-OFF")
+Nod("W51-OFF", "1", "2", 60)
 
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -49,4 +50,5 @@ DecLatMap('w51m_irs2',
           scanDuration = scanDuration,
           beamName=beamName)
 
+Nod("W51-OFF", "1", "2", 60)
 CalSeq(type="manual", scanDuration=10.0, location="W51-OFF")
