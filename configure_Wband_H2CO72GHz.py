@@ -21,6 +21,7 @@ restfreq  = 71000., 72500.
 dopplertrackfreq = 72837.95
 deltafreq = 0
 bandwidth = 1500 # usable = 1250
+iftarget  = 3.0
 nchan     = "high"
 swmode    = "tp_nocal"
 swtype    = "none"
