@@ -1,5 +1,5 @@
 # OTF mapping
-# Calibration + Dec map
+# Calibration + RA OTF map
 # Expected time ~40m
 
 # -=-=-=-=-=-=-=-
@@ -40,17 +40,18 @@ decsize = 1.5/60. # Dec Extent 1.5 arcmin
 stepsize = 4./3600. # Step 4"
 total_time = 30. # 30 minutes integ. time target
 
-nscans = rasize / stepsize
+nscans = decsize / stepsize
 scanDuration = total_time*60. / nscans # 80 seconds
 
-DecLatMapWithReference('W49_Center',
+RALongMapWithReference('W49_Center',
                        hLength = Offset("J2000", rasize, 0.0, cosv=True),
                        vLength = Offset("J2000", 0.0, decsize, cosv=True),
-                       hDelta  = Offset("J2000", stepsize, 0.0, cosv=True),
-                       scanDuration = scanDuration,
+                       vDelta  = Offset("J2000", 0.0, stepsize, cosv=True),
                        referenceOffset = Offset("J2000",1,-1, cosv=True),
                        referenceInterval = 3,
+                       scanDuration = scanDuration,
                        beamName=beamName)
+
 
 Nod("W49-OFF", "1", "2", 60)
 CalSeq(type="manual", scanDuration=10.0, location="W49-OFF")
