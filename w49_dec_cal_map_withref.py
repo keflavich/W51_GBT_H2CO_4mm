@@ -18,18 +18,18 @@ catp = Catalog("/users/aginsbur/GBT15A-446/w51.cat")
 # Chopper Wheel Calibration
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-Slew('w51m_irs2')
+Slew('W49_Center')
 Balance()
 
-CalSeq(type="manual", scanDuration=10.0, location="W51-OFF")
-Nod("W51-OFF", "1", "2", 60)
+CalSeq(type="manual", scanDuration=10.0, location="W49-OFF")
+Nod("W49-OFF", "1", "2", 60)
 
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 # Integrate on Source
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-Slew('w51m_irs2')
+Slew('W49_Center')
 
 #pick beam 2 
 beamName = '2'
@@ -43,7 +43,7 @@ total_time = 30. # 30 minutes integ. time target
 nscans = rasize / stepsize
 scanDuration = total_time*60. / nscans # 80 seconds
 
-DecLatMapWithReference('w51m_irs2',
+DecLatMapWithReference('W49_Center',
                        hLength = Offset("J2000", rasize, 0.0, cosv=True),
                        vLength = Offset("J2000", 0.0, decsize, cosv=True),
                        hDelta  = Offset("J2000", stepsize, 0.0, cosv=True),
@@ -52,5 +52,5 @@ DecLatMapWithReference('w51m_irs2',
                        referenceInterval = 3,
                        beamName=beamName)
 
-Nod("W51-OFF", "1", "2", 60)
-CalSeq(type="manual", scanDuration=10.0, location="W51-OFF")
+Nod("W49-OFF", "1", "2", 60)
+CalSeq(type="manual", scanDuration=10.0, location="W49-OFF")
