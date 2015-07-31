@@ -16,15 +16,15 @@ samplers = {
         }
 
 feeds = {
-        0: [2],
-        1: [1],
+        0: [2,2],
+        1: [1,1],
         }
 
 for ifnum in samplers:
     for sampler,feednum in zip(samplers[ifnum],feeds[ifnum]):
 
 
-        filename = paths.AGBT15A_446_3_fullpath
+        filename = paths.AGBT15A_446_3_fullpath.format(sampler_letter[ifnum])
         filepyfits = pyfits.open(filename,memmap=True)
         datapfits = filepyfits[1].data
         dataarr = datapfits.DATA
@@ -58,7 +58,7 @@ for ifnum in samplers:
                                                                  ("W51","W49","W49"),
                                                                 ):
 
-    s1,s2 = scanrange
+            s1,s2 = scanrange
 
             savefile = os.path.join(paths.AGBT15A_446_3_path,
                                     "AGBT15A_446_03_{0}_fd{1}_if{2}_sr{3}-{4}"

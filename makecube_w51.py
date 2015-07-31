@@ -15,6 +15,8 @@ import constants
 import paths
 import pyspeckit
 
+log.setLevel(11)
+
 line_table = Table.read(os.path.join(paths.spectra, 'bright_lines.ipac'),
                         format='ascii.ipac')
 
@@ -34,11 +36,70 @@ for row in line_table:
     files = ([os.path.join(paths.AGBT15A_446_2_path, fn) for fn in
               ('15A_446_2_29to52_G1_0_F2.fits',
                '15A_446_2_106to136_G1_0_F2.fits',
-               '15A_446_2_62to92_G1_0_F2.fits',) ] +
+               '15A_446_2_62to92_G1_0_F2.fits',
+               '15A_446_2_29to52_G2_0_F2.fits',
+               '15A_446_2_106to136_G2_0_F2.fits',
+               '15A_446_2_62to92_G2_0_F2.fits',
+              ) ] +
              [os.path.join(paths.AGBT15A_446_3_path, fn) for fn in
-              ('15A_446_3_27to57_G1_0_F2.fits',)])
+              ('15A_446_3_27to57_G1_0_F2.fits',
+               '15A_446_3_27to57_G2_0_F2.fits',
+              )])
 
-    log.setLevel(11)
+
+    for fn in files:
+        sdpy.makecube.add_file_to_cube(fn,
+                                       cubename+'.fits',
+                                       nhits=cubename+'_nhits.fits',
+                                       add_with_kernel=True,
+                                       kernel_fwhm=3./3600.,
+                                       velocityrange=[-160,160],
+                                       excludefitrange=[40,70],
+                                       diagnostic_plot_name=fn.replace('.fits','_data_scrubbed.png'),
+                                       coordsys='radec',
+                                       progressbar=True,
+                                       linefreq=row['Freq']*1e9,
+                                      )
+                                       #smoothto=0.5)
+
+    # EXTENDED REGION
+
+    files = ([os.path.join(paths.AGBT15A_446_2_path, fn) for fn in
+              ('15A_446_2_29to52_C1_0_F1.fits',
+               '15A_446_2_106to136_C1_0_F1.fits',
+               '15A_446_2_62to92_C1_0_F1.fits',
+               '15A_446_2_29to52_C2_0_F1.fits',
+               '15A_446_2_106to136_C2_0_F1.fits',
+               '15A_446_2_62to92_C2_0_F1.fits',
+              ) ] +
+             [os.path.join(paths.AGBT15A_446_3_path, fn) for fn in
+              ('15A_446_3_27to57_C1_0_F1.fits',
+               '15A_446_3_27to57_C2_0_F1.fits',
+              )])
+
+    # Determine the extent of the 'extra' maps
+    crval2=[]
+    crval3=[]
+    for fn in files:
+        d = fits.getdata(fn)
+        ok = d.OBJECT == 'W51M_IRS2'
+        crval2 += d.CRVAL2[ok].tolist()
+        crval3 += d.CRVAL3[ok].tolist()
+    crval2 = np.array(crval2)
+    crval3 = np.array(crval3)
+    xr = crval2.min(), crval2.max()
+    yr = crval3.min(), crval3.max()
+    pixsize=3#arcsec
+    naxis1 = (xr[1]-xr[0])*3600/pixsize
+    naxis2 = (yr[1]-yr[0])*3600/pixsize
+
+    cubename='W51_ExtraFeed_{line}_cube'.format(line=row['Species'])
+    sdpy.makecube.generate_header(np.mean(xr), np.mean(yr), coordsys='radec',
+                                  naxis1=naxis1, naxis2=naxis2,
+                                  pixsize=pixsize, naxis3=800, cd3=0.4,
+                                  clobber=True, restfreq=row['Freq']*1e9)
+    sdpy.makecube.make_blank_images(cubename,clobber=True)
+
 
     for fn in files:
         sdpy.makecube.add_file_to_cube(fn,
@@ -56,18 +117,19 @@ for row in line_table:
                                        #smoothto=0.5)
 
 for row in line_table:
-    cubename='W51_{line}_cube'.format(line=row['Species'])
-    cube = SpectralCube.read(cubename+".fits")
-    med = cube.median(axis=0)
-    cubesub = cube-med*u.K
-    mask = np.zeros(cubesub.shape, dtype='bool')
-    mask[((cubesub.spectral_axis > 35*u.km/u.s) &
-          (cubesub.spectral_axis < 60*u.km/u.s)),:,:] = True
-    bcube = pyspeckit.cubes.baseline_cube(cubesub.filled_data[:], polyorder=5,
-                                          cubemask=mask)
-    f = fits.open(cubename+".fits")
-    f[0].data = bcube
-    f.writeto(cubename+"_bpoly5.fits", clobber=True)
+    for prefix in ("W51", "W51_ExtraFeed"):
+        cubename='{prefix}_{line}_cube'.format(line=row['Species'], prefix=prefix)
+        cube = SpectralCube.read(cubename+".fits")
+        med = cube.median(axis=0)
+        cubesub = cube-med*u.K
+        mask = np.zeros(cubesub.shape, dtype='bool')
+        mask[((cubesub.spectral_axis > 35*u.km/u.s) &
+              (cubesub.spectral_axis < 60*u.km/u.s)),:,:] = True
+        bcube = pyspeckit.cubes.baseline_cube(cubesub.filled_data[:], polyorder=5,
+                                              cubemask=mask)
+        f = fits.open(cubename+".fits")
+        f[0].data = bcube
+        f.writeto(cubename+"_bpoly5.fits", clobber=True)
 
 #import os
 #
