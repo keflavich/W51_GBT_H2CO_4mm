@@ -1,3 +1,4 @@
+import os
 import astropy.io.fits as pyfits
 import itertools
 import sys
@@ -8,34 +9,64 @@ import numpy as np
 np.seterr(all='ignore')
 from astropy import coordinates
 from astropy import log
+from astropy.table import Table
+from astropy import units as u
 import constants
+import paths
+import pyspeckit
+
+line_table = Table.read(os.path.join(paths.spectra, 'bright_lines.ipac'),
+                        format='ascii.ipac')
 
 center = coordinates.SkyCoord('19:23:41.935   +14:30:47.49', unit=('hour','deg'))
 
-cubename='W51_H2CO1-0_cube'
-# 1.5 x 1.5 '
-sdpy.makecube.generate_header(center.ra.deg, center.dec.deg, coordsys='radec',
-                         naxis1=40, naxis2=40, pixsize=3, naxis3=800, cd3=0.4,
-                         clobber=True, restfreq=constants.restfreq)
-sdpy.makecube.make_blank_images(cubename,clobber=True)
 
-files = ['/Volumes/passport/gbt/AGBT15A_446_02.raw.vegas/AGBT15A_446_02.raw.vegas.G.fits'
-         ]
+for row in line_table:
+    cubename='W51_{line}_cube'.format(line=row['Species'])
+    # 1.5 x 1.5 '
+    sdpy.makecube.generate_header(center.ra.deg, center.dec.deg, coordsys='radec',
+                             naxis1=40, naxis2=40, pixsize=3, naxis3=800, cd3=0.4,
+                             clobber=True, restfreq=row['Freq']*1e9)
+    sdpy.makecube.make_blank_images(cubename,clobber=True)
 
-log.setLevel(11)
+    #files = ['/Volumes/passport/gbt/AGBT15A_446_02.raw.vegas/AGBT15A_446_02.raw.vegas.G.fits'
+    #         ]
+    files = [
+        '15A_446_2_29to52_G1_0_F2.fits',
+        '15A_446_2_106to136_G1_0_F2.fits',
+        '15A_446_2_62to92_G1_0_F2.fits',
+    ]
 
-for fn in files:
-    sdpy.makecube.add_file_to_cube(fn,
-                                   cubename+'.fits',
-                                   nhits=cubename+'_nhits.fits',
-                                   add_with_kernel=True,
-                                   kernel_fwhm=3./3600.,
-                                   velocityrange=[-400,400],
-                                   excludefitrange=[40,70],
-                                   diagnostic_plot_name=fn.replace('.fits','_data_scrubbed.png'),
-                                   coordsys='radec',
-                                   progressbar=True,
-                                   smoothto=0.5)
+    log.setLevel(11)
+
+    for fn in files:
+        sdpy.makecube.add_file_to_cube(os.path.join(paths.AGBT15A_446_2_path, fn),
+                                       cubename+'.fits',
+                                       nhits=cubename+'_nhits.fits',
+                                       add_with_kernel=True,
+                                       kernel_fwhm=3./3600.,
+                                       velocityrange=[-160,160],
+                                       excludefitrange=[40,70],
+                                       diagnostic_plot_name=fn.replace('.fits','_data_scrubbed.png'),
+                                       coordsys='radec',
+                                       progressbar=True,
+                                       linefreq=row['Freq']*1e9,
+                                      )
+                                       #smoothto=0.5)
+
+for row in line_table:
+    cubename='W51_{line}_cube'.format(line=row['Species'])
+    cube = SpectralCube.read(cubename+".fits")
+    med = cube.median(axis=0)
+    cubesub = cube-med*u.K
+    mask = np.zeros(cubesub.shape, dtype='bool')
+    mask[((cubesub.spectral_axis > 35*u.km/u.s) &
+          (cubesub.spectral_axis < 60*u.km/u.s)),:,:] = True
+    bcube = pyspeckit.cubes.baseline_cube(cubesub.filled_data[:], polyorder=5,
+                                          cubemask=mask)
+    f = fits.open(cubename+".fits")
+    f[0].data = bcube
+    f.writeto(cubename+"_bpoly5.fits")
 
 #import os
 #

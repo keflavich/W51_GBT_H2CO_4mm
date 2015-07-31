@@ -1,0 +1,48 @@
+|      Species|      ChemicalName|                           QNs|         Freq|log10_Aij|      EU_K|
+|         char|              char|                          char|       double|   double|    double|
+|             |                  |                              |             |         |          |
+|         null|              null|                          null|         null|     null|      null|
+          H2CO       Formaldehyde                  1(0,1)-0(0,0)      72.83795  -5.08874    3.49565 
+          H2CO       Formaldehyde                  1(0,1)-0(0,0)      72.83795  -5.08904    3.49565 
+          H2CO       Formaldehyde                  1(0,1)-0(0,0)      72.83795  -5.08876    3.49565 
+          H2CO       Formaldehyde                  1(0,1)-0(0,0)      72.83795       0.0        0.0 
+       Unknown            Unknown                        Unknown 73.0664091385       0.0        0.0 
+       Unknown            Unknown                        Unknown 72.9612254266       0.0        0.0 
+       Unknown            Unknown                        Unknown 72.1080759989       0.0        0.0 
+       Unknown            Unknown                        Unknown 72.8244664422       0.0        0.0 
+    13CH3CH2CN      Ethyl Cyanide              30(8,23)-31(7,24)      71.89607  -6.32746  265.55726 
+    13CH3CH2CN      Ethyl Cyanide              30(8,23)-31(7,24)      71.89613  -6.32773  265.55669 
+    CH3CH213CN      Ethyl Cyanide            8(1,7)-7(1,6),F=8-7      72.97634  -4.99185   16.88932 
+    CH3CH213CN      Ethyl Cyanide            8(1,7)-7(1,6),F=7-6      72.97635  -4.99289   16.88946 
+    CH3CH213CN      Ethyl Cyanide                  8(1,7)-7(1,6)      72.97635  -4.50795   16.88946 
+    CH3CH213CN      Ethyl Cyanide                  8(1,7)-7(1,6)      72.97636  -4.50793   16.89004 
+    CH3CH213CN      Ethyl Cyanide            8(1,7)-7(1,6),F=9-8      72.97637  -4.98506   16.88946 
+          H2CO       Formaldehyde                  1(0,1)-0(0,0)      72.83795  -5.08874    3.49565 
+          H2CO       Formaldehyde                  1(0,1)-0(0,0)      72.83795  -5.08904    3.49565 
+          H2CO       Formaldehyde                  1(0,1)-0(0,0)      72.83795  -5.08876    3.49565 
+          H2CO       Formaldehyde                  1(0,1)-0(0,0)      72.83795       0.0        0.0 
+           CCS Thioxoethenylidene                N=11-10,J=10-10      72.78354       0.0   46.39597 
+           CCS Thioxoethenylidene                N=11-10,J=10-10      72.78354       0.0   46.39583 
+           CCS Thioxoethenylidene                N=11-10,J=10-10      72.78355       0.0   46.39568 
+       HC3Nv=0     Cyanoacetylene                    J=8-7,F=7-6      72.78381  -5.01641   15.71884 
+     a-H2CCHOH      Vinyl Alcohol             54(9,45)-53(10,44)      72.78382  -4.90837 1595.12744 
+       HC3Nv=0     Cyanoacetylene                          J=8-7      72.78382  -4.53213   15.71827 
+       HC3Nv=0     Cyanoacetylene                          J=8-7      72.78382       0.0        0.0 
+       HC3Nv=0     Cyanoacetylene                          J=8-7      72.78382  -4.53147   15.71885 
+       HC3Nv=0     Cyanoacetylene                          J=8-7      72.78382  -4.53329   15.71885 
+       HC3Nv=0     Cyanoacetylene                    J=8-7,F=8-7      72.78382  -5.01547   15.71885 
+       HC3Nv=0     Cyanoacetylene                    J=8-7,F=9-8      72.78383  -5.00867   15.71885 
+ g'Ga-(CH2OH)2    Ethylene Glycol        16(2,14)v=0-16(1,15)v=0      72.75772  -6.11293   70.58576 
+    CH3OCHOv=0     Methyl Formate                 6(2,5)-5(2,4)A      72.68556  -5.31303   14.92813 
+    CH3OCHOv=0     Methyl Formate                 6(2,5)-5(2,4)A      72.68559  -5.30899   14.92799 
+    CH3OCHOv=0     Methyl Formate                 6(2,5)-5(2,4)A      72.68559       0.0        0.0 
+    CH3OCHOv=0     Methyl Formate                 6(2,5)-5(2,4)E      72.68077  -5.30904   14.94502 
+    CH3OCHOv=0     Methyl Formate                 6(2,5)-5(2,4)E      72.68077       0.0        0.0 
+    CH3OCHOv=0     Methyl Formate                 6(2,5)-5(2,4)E      72.68083  -5.31323   14.94574 
+      E-HNCHCN   Cyanomethanimine 54(3,52)-53(4,49),I=0-2,F=54-5      72.66695  -7.47172  707.28417 
+        DCNv=0   Hydrogen Cyanide                          J=1-0      72.41469  -5.35742    3.47534 
+        DCNv=0   Hydrogen Cyanide                          J=1-0      72.41469  -4.88018    3.47534 
+          H2CO       Formaldehyde            5(1,4)-5(1,5),F=4-4      72.40906  -6.11373   65.92727 
+       CH3OCH3     Dimethyl ether             10(1,9)-10(0,10)EE      72.29993  -5.48931   52.72348 
+       CH3OCH3     Dimethyl ether             10(1,9)-10(0,10)EE      72.29997       0.0        0.0 
+       CH3OCH3     Dimethyl ether             10(1,9)-10(0,10)EE      72.29997  -4.48479    52.7232 
