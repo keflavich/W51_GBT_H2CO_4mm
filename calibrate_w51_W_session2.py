@@ -9,46 +9,56 @@ import constants
 sourcename = "W51M_IRS2"
 mapname = 'W51'
 
-filename = paths.AGBT15A_446_2_fullpath
-filepyfits = pyfits.open(filename,memmap=True)
-datapfits = filepyfits[1].data
-dataarr = datapfits.DATA
-
+sampler_letter = {0: 'G',
+                  1: 'C'}
 
 samplers = {
         0: ["G1_0","G2_0", ],
+        1: ["C1_0","C2_0", ],
         }
 
 feeds = {
         0: [2],
+        1: [1],
         }
 
-gain_dict = calibrate_map_scans.compute_gains_highfreq(datapfits, feednum=2, sampler='G1_0')
-gaintimes = np.array(gain_dict.keys())
-gains = np.array([v[0] for v in gain_dict.values()])
-tsys = np.array([v[1] for v in gain_dict.values()])
-gainsOK = gains > 0
-gaintimes = gaintimes[gainsOK]
-gains = gains[gainsOK]
-gain = np.median(gains)
-datapfits['TSYS'] = np.median(tsys[gainsOK])
 
-#for obsmode,refscans,scanrange in zip(('DecLatMap','RALongMap','DecLatMap'),([9,54],[62,98],[108,140]),([9,54],[62,98],[108,140])):
-for obsmode,refscans,scanrange in zip(('DecLatMap',
-                                       'DecLatMap',
-                                       'RALongMap'),
-                                      ([29,52],
-                                       [105, 109, 113, 117, 121, 125, 129, 133],
-                                       [61, 65, 69, 73, 77, 81, 85, 89,]),
-                                      ([29,52],
-                                       [106,136],
-                                       [62,92])
-                                      ):
+for ifnum in samplers:
+    for sampler,feednum in zip(samplers[ifnum],feeds[ifnum]):
 
-    s1,s2 = scanrange
 
-    for ifnum in samplers:
-        for sampler,feednum in zip(samplers[ifnum],feeds[ifnum]):
+        filename = paths.AGBT15A_446_2_fullpath.format(sampler_letter[ifnum])
+        filepyfits = pyfits.open(filename,memmap=True)
+        datapfits = filepyfits[1].data
+        dataarr = datapfits.DATA
+
+        gain_dict = calibrate_map_scans.compute_gains_highfreq(datapfits,
+                                                               feednum=feednum,
+                                                               sampler=sampler)
+        gain_dict = {k:v for k,v in gain_dict.iteritems() if v[1] > 0}
+        gaintimes = np.array(gain_dict.keys())
+        gains = np.array([v[0] for v in gain_dict.values()])
+        tsys = np.array([v[1] for v in gain_dict.values()])
+        gainsOK = gains > 0
+        gaintimes = gaintimes[gainsOK]
+        gains = gains[gainsOK]
+        gain = np.median(gains)
+        datapfits['TSYS'] = np.median(tsys[gainsOK])
+
+
+        #for obsmode,refscans,scanrange in zip(('DecLatMap','RALongMap','DecLatMap'),([9,54],[62,98],[108,140]),([9,54],[62,98],[108,140])):
+        for obsmode,refscans,scanrange in zip(('DecLatMap',
+                                               'DecLatMap',
+                                               'RALongMap'),
+                                              ([29,52],
+                                               [105, 109, 113, 117, 121, 125, 129, 133],
+                                               [61, 65, 69, 73, 77, 81, 85, 89,]),
+                                              ([29,52],
+                                               [106,136],
+                                               [62,92])
+                                              ):
+
+            s1,s2 = scanrange
 
             savefile = os.path.join(paths.AGBT15A_446_2_path,
                                     "AGBT15A_446_02_{0}_fd{1}_if{2}_sr{3}-{4}"

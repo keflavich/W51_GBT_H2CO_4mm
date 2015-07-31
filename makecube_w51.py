@@ -31,16 +31,17 @@ for row in line_table:
 
     #files = ['/Volumes/passport/gbt/AGBT15A_446_02.raw.vegas/AGBT15A_446_02.raw.vegas.G.fits'
     #         ]
-    files = [
-        '15A_446_2_29to52_G1_0_F2.fits',
-        '15A_446_2_106to136_G1_0_F2.fits',
-        '15A_446_2_62to92_G1_0_F2.fits',
-    ]
+    files = ([os.path.join(paths.AGBT15A_446_2_path, fn) for fn in
+              ('15A_446_2_29to52_G1_0_F2.fits',
+               '15A_446_2_106to136_G1_0_F2.fits',
+               '15A_446_2_62to92_G1_0_F2.fits',) ] +
+             [os.path.join(paths.AGBT15A_446_3_path, fn) for fn in
+              ('15A_446_3_27to57_G1_0_F2.fits',)])
 
     log.setLevel(11)
 
     for fn in files:
-        sdpy.makecube.add_file_to_cube(os.path.join(paths.AGBT15A_446_2_path, fn),
+        sdpy.makecube.add_file_to_cube(fn,
                                        cubename+'.fits',
                                        nhits=cubename+'_nhits.fits',
                                        add_with_kernel=True,
@@ -66,7 +67,7 @@ for row in line_table:
                                           cubemask=mask)
     f = fits.open(cubename+".fits")
     f[0].data = bcube
-    f.writeto(cubename+"_bpoly5.fits")
+    f.writeto(cubename+"_bpoly5.fits", clobber=True)
 
 #import os
 #
