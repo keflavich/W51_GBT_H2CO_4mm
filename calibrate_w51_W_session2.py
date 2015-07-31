@@ -24,7 +24,7 @@ feeds = {
         }
 
 gain_dict = calibrate_map_scans.compute_gains_highfreq(datapfits, feednum=2, sampler='G1_0')
-gaintimes = np.array(gain_dict.keys(), dtype=np.datetime64)
+gaintimes = np.array(gain_dict.keys())
 gains = np.array([v[0] for v in gain_dict.values()])
 tsys = np.array([v[1] for v in gain_dict.values()])
 gainsOK = gains > 0
@@ -53,6 +53,7 @@ for obsmode,refscans,scanrange in zip(('DecLatMap',
             savefile = os.path.join(paths.AGBT15A_446_2_path,
                                     "AGBT15A_446_02_{0}_fd{1}_if{2}_sr{3}-{4}"
                                     .format(sampler,feednum,ifnum,s1,s2))
+            log.info(savefile)
 
             #if sampler in ('A1_0','A2_0'):
             #    off_template,off_template_in = make_off_template.make_off(filename, scanrange=scanrange,
@@ -67,7 +68,7 @@ for obsmode,refscans,scanrange in zip(('DecLatMap',
             #            linefreq=constants.restfreq, # needed to get velo right...
             #            extension=1, exclude_spectral_ends=10)
 
-            outfn = paths.outpath+'15A_446_2_%ito%i_%s_F%i.fits' % (s1,s2,sampler,feednum)
+            outfn = paths.AGBT15A_446_2_path+'15A_446_2_%ito%i_%s_F%i.fits' % (s1,s2,sampler,feednum)
             calibrate_map_scans.calibrate_cube_data(filename,
                                                     outfn,
                                                     scanrange=scanrange,
@@ -79,7 +80,7 @@ for obsmode,refscans,scanrange in zip(('DecLatMap',
                                                     datapfits=datapfits,
                                                     # ignored b/c gain tau=0.50,
                                                     tsys=np.median(tsys[gainsOK]),
-                                                    gain=gain,
+                                                    gain=gain_dict,
                                                     dataarr=dataarr,
                                                     obsmode=obsmode,
                                                     sourcename=sourcename,
