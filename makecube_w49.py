@@ -112,8 +112,8 @@ for row in line_table:
         med = cube.median(axis=0)
         cubesub = cube-med*u.K
         mask = np.zeros(cubesub.shape, dtype='bool')
-        mask[((cubesub.spectral_axis > 35*u.km/u.s) &
-              (cubesub.spectral_axis < 60*u.km/u.s)),:,:] = True
+        mask[((cubesub.spectral_axis > -10*u.km/u.s) &
+              (cubesub.spectral_axis < 20*u.km/u.s)),:,:] = True
         bcube = pyspeckit.cubes.baseline_cube(cubesub.filled_data[:], polyorder=5,
                                               cubemask=mask)
         f = fits.open(cubename+".fits")

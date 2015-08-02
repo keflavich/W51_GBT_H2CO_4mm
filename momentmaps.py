@@ -35,8 +35,11 @@ for region, vrange in (
         mx = slab.with_mask(mask).max(axis=0)
 
         m0.hdu.writeto(os.path.join(paths.projpath,'mom0',
-                                    fn.format(region=region).replace(".fits","_mom0.fits")))
+                                    fn.format(region=region).replace(".fits","_mom0.fits")),
+                      clobber=True)
         m1.hdu.writeto(os.path.join(paths.projpath,'mom1',
-                                    fn.format(region=region).replace(".fits","_mom1.fits")))
+                                    fn.format(region=region).replace(".fits","_mom1.fits")),
+                      clobber=True)
         mx.hdu.writeto(os.path.join(paths.projpath,'max',
-                                    fn.format(region=region).replace(".fits","_max.fits")))
+                                    fn.format(region=region).replace(".fits","_max.fits")),
+                      clobber=True)
