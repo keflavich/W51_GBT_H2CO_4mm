@@ -1,5 +1,6 @@
 import os
 import astropy.io.fits as pyfits
+from astropy.io import fits
 import itertools
 import sys
 import sdpy
@@ -24,12 +25,6 @@ center = coordinates.SkyCoord('19:23:41.935   +14:30:47.49', unit=('hour','deg')
 
 
 for row in line_table:
-    cubename='W51_{line}_cube'.format(line=row['Species'])
-    # 1.5 x 1.5 '
-    sdpy.makecube.generate_header(center.ra.deg, center.dec.deg, coordsys='radec',
-                             naxis1=40, naxis2=40, pixsize=3, naxis3=800, cd3=0.4,
-                             clobber=True, restfreq=row['Freq']*1e9)
-    sdpy.makecube.make_blank_images(cubename,clobber=True)
 
     #files = ['/Volumes/passport/gbt/AGBT15A_446_02.raw.vegas/AGBT15A_446_02.raw.vegas.G.fits'
     #         ]
@@ -44,7 +39,41 @@ for row in line_table:
              [os.path.join(paths.AGBT15A_446_3_path, fn) for fn in
               ('15A_446_3_27to57_G1_0_F2.fits',
                '15A_446_3_27to57_G2_0_F2.fits',
-              )])
+              )] +
+             [os.path.join(paths.AGBT15A_446_4_path, fn) for fn in
+              ('15A_446_4_27to57_G1_0_F2.fits',
+               '15A_446_4_27to57_G2_0_F2.fits',
+              )]
+            )
+    
+    # Determine the extent of the 'main' maps
+    crval2=[]
+    crval3=[]
+    for fn in files:
+        d = fits.getdata(fn)
+        ok = (d.OBJECT == 'W51M_IRS2') | (d.OBJECT == 'W51M_SE')
+        crval2 += d.CRVAL2[ok].tolist()
+        crval3 += d.CRVAL3[ok].tolist()
+    crval2 = np.array(crval2)
+    crval3 = np.array(crval3)
+    xr = crval2.min(), crval2.max()
+    yr = crval3.min(), crval3.max()
+    pixsize=3#arcsec
+    naxis1 = (xr[1]-xr[0])*3600/pixsize
+    naxis2 = (yr[1]-yr[0])*3600/pixsize
+
+    cubename='W51_{line}_cube'.format(line=row['Species'])
+    sdpy.makecube.generate_header(np.mean(xr), np.mean(yr), coordsys='radec',
+                                  naxis1=naxis1, naxis2=naxis2,
+                                  pixsize=pixsize, naxis3=800, cd3=0.4,
+                                  clobber=True, restfreq=row['Freq']*1e9)
+    sdpy.makecube.make_blank_images(cubename,clobber=True)
+    # old version:
+    # sdpy.makecube.generate_header(center.ra.deg, center.dec.deg, coordsys='radec',
+    #                          naxis1=40, naxis2=40, pixsize=3, naxis3=800, cd3=0.4,
+    #                          clobber=True, restfreq=row['Freq']*1e9)
+    # sdpy.makecube.make_blank_images(cubename,clobber=True)
+
 
 
     for fn in files:
@@ -75,7 +104,12 @@ for row in line_table:
              [os.path.join(paths.AGBT15A_446_3_path, fn) for fn in
               ('15A_446_3_27to57_C1_0_F1.fits',
                '15A_446_3_27to57_C2_0_F1.fits',
-              )])
+              )] + 
+             [os.path.join(paths.AGBT15A_446_4_path, fn) for fn in
+              ('15A_446_4_27to57_C1_0_F1.fits',
+               '15A_446_4_27to57_C2_0_F1.fits',
+              )]
+            )
 
     # Determine the extent of the 'extra' maps
     crval2=[]
