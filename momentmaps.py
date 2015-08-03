@@ -27,11 +27,13 @@ for region, vrange in (
     mask = h2coslab > 3*noise
 
     for fn in files:
-        cube = SpectralCube.read(fn.format(region=region))
+        ffn = os.path.join(paths.projpath, fn)
+        cube = SpectralCube.read(ffn.format(region=region))
         slab = cube.spectral_slab(vrange[0]*u.km/u.s, vrange[1]*u.km/u.s)
 
         m0 = slab.with_mask(mask).moment0(axis=0)
         m1 = slab.with_mask(mask).moment1(axis=0)
+        m2 = slab.with_mask(mask).moment2(axis=0)
         mx = slab.with_mask(mask).max(axis=0)
 
         m0.hdu.writeto(os.path.join(paths.projpath,'mom0',
@@ -39,6 +41,9 @@ for region, vrange in (
                       clobber=True)
         m1.hdu.writeto(os.path.join(paths.projpath,'mom1',
                                     fn.format(region=region).replace(".fits","_mom1.fits")),
+                      clobber=True)
+        m2.hdu.writeto(os.path.join(paths.projpath,'mom2',
+                                    fn.format(region=region).replace(".fits","_mom2.fits")),
                       clobber=True)
         mx.hdu.writeto(os.path.join(paths.projpath,'max',
                                     fn.format(region=region).replace(".fits","_max.fits")),

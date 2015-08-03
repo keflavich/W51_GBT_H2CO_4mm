@@ -46,13 +46,16 @@ for ifnum in samplers:
 
         #for obsmode,refscans,scanrange in zip(('DecLatMap','RALongMap','DecLatMap'),([9,54],[62,98],[108,140]),([9,54],[62,98],[108,140])):
         for obsmode,refscans,scanrange,sourcename,mapname in zip(('RALongMap',
+                                                                  'DecLatMap',
                                                                   ),
                                                                  ([26,30,34,38,42,46,50,54,58],
+                                                                  [74,78,82,86,90],
                                                                   ),
                                                                  ([27,57],
+                                                                  [75,89],
                                                                   ),
-                                                                 ("W51M_SE",),
-                                                                 ("W51",),
+                                                                 ("W51M_SE","W51M_SE",),
+                                                                 ("W51","W51",),
                                                                 ):
 
             s1,s2 = scanrange

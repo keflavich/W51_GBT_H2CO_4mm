@@ -1,4 +1,5 @@
 import numpy as np
+import paths
 from astroquery.splatalogue import Splatalogue, utils
 from astropy import units as u
 from astropy.table import Table
@@ -55,7 +56,8 @@ for t in tables:
         tbl.add_row(row)
 
 
-x,y = np.loadtxt('W51_Feed1_scan74', skiprows=3).T
+x,y = np.loadtxt(os.path.join(paths.rootpath, 'spectra',
+                              'W51_Feed1_scan72_session4'), skiprows=3).T
 sp = pyspeckit.Spectrum(xarr=x*u.GHz, data=y)
 sp.plotter(xmin=72.8,xmax=72.86)
 sp.baseline(xmin=72.80*u.GHz, xmax=72.8577, exclude=[72.82, 72.8285], highlight_fitregion=True)
@@ -65,9 +67,11 @@ shift = sp.specfit.parinfo.SHIFT0.value
 sp_rest = pyspeckit.Spectrum(xarr=(x+(constants.restfreq/1e9 - shift))*u.GHz, data=y)
 sp_rest.plotter()
 sp_rest.plotter.line_ids(tbl['Species'], tbl['Freq']*u.GHz)
-sp_rest.plotter.savefig("W51_LineIDs_72GHz.png")
+sp_rest.plotter.savefig(os.path.join(paths.rootpath, 'spectra',
+                                     "W51_LineIDs_72GHz.png"))
 
-x,y = np.loadtxt('W49N_IF1_scan120', skiprows=3).T
+x,y = np.loadtxt(os.path.join(paths.rootpath, 'spectra', 'W49N_IF1_scan120'),
+                 skiprows=3).T
 spw49 = pyspeckit.Spectrum(xarr=x*u.GHz, data=y)
 spw49.plotter(xmin=72.8,xmax=72.86)
 spw49.baseline(xmin=72.80*u.GHz, xmax=72.8577, exclude=[72.8332, 72.8406], highlight_fitregion=True)
@@ -77,7 +81,8 @@ shift = spw49.specfit.parinfo.SHIFT0.value
 spw49_rest = pyspeckit.Spectrum(xarr=(x+(constants.restfreq/1e9 - shift))*u.GHz, data=y)
 spw49_rest.plotter()
 spw49_rest.plotter.line_ids(tbl['Species'], tbl['Freq']*u.GHz)
-spw49_rest.plotter.savefig("W49N_LineIDs_72GHz.png")
+spw49_rest.plotter.savefig(os.path.join(paths.rootpath, 'spectra',
+                                        "W49N_LineIDs_72GHz.png"))
 
 
 #In [76]: sp_rest.specfit.parinfo
