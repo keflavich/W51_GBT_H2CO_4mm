@@ -4,6 +4,7 @@ import paths
 from astroquery.splatalogue import Splatalogue, utils
 from astropy import units as u
 from astropy.table import Table
+from astropy.io import ascii
 import pyspeckit
 import pylab as pl
 import sys
@@ -45,7 +46,7 @@ def make_table(restfreqs):
             main_table.add_row(['Unknown','Unknown','Unknown',freq,0,0])
             continue
             print(freq)
-            dv = 1
+            dv = 3
             while len(t) == 0:
                 dv = dv + 1
                 print(dv)
@@ -65,6 +66,14 @@ import paths
 import pyspeckit
 import constants
 #log.setLevel('DEBUG')
+
+x,y = np.loadtxt(os.path.join(paths.root, 'orion_wband', 'table2.dat.gz')).T
+sp_ori = pyspeckit.Spectrum(xarr=x*u.GHz* (1+8.8/3e5), data=y)
+tbl4 = ascii.read(os.path.join(paths.root, 'orion_wband', 'table4.dat'))
+xmol = tbl4['col1']/1e3 * (1+8.8/3e5)
+mol = tbl4['col7']
+                 
+
 x,y = np.loadtxt(os.path.join(paths.root, 'spectra',
                               'W51_Feed1_scan72_session4'), skiprows=3).T
 sp = pyspeckit.Spectrum(xarr=x*u.GHz, data=y)
@@ -109,6 +118,20 @@ sp_rest.plotter.savefig(os.path.join(paths.root, 'spectra',
                                      "W51_LineIDs_72GHz.png"))
 sp_rest.plotter.savefig(os.path.join(paths.root, 'spectra',
                                      "W51_LineIDs_72GHz.pdf"))
+
+sp_rest.plotter(xmin=72.29*u.GHz, xmax=73.0*u.GHz)
+sp_rest.specfit.plot_fit(annotate=False)
+molok = (xmol > 72.29) & (xmol < 73.0)
+sp_rest.plotter.line_ids(mol[molok], xmol[molok]*u.GHz)
+sp_rest.plotter.savefig(os.path.join(paths.root, 'spectra',
+                                     "W51_LineIDs_72GHz_Orion.pdf"))
+sp_rest.plotter.savefig(os.path.join(paths.root, 'spectra',
+                                     "W51_LineIDs_72GHz_Orion.png"))
+
+sp_ori.plotter(xmin=72.29*u.GHz, xmax=73.0*u.GHz)
+sp_ori.plotter.line_ids(mol[molok], xmol[molok]*u.GHz)
+sp_ori.plotter.savefig(os.path.join(paths.root, 'spectra',
+                                     "Orion_72GHz_LineIDs.png"))
 
 x,y = np.loadtxt(os.path.join(paths.root, 'spectra', 'W49N_IF1_scan120'),
                  skiprows=3).T
